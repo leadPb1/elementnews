@@ -7,14 +7,34 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.10/marked.min.js"></script>
 </head>
 <body>
+    <h1>원소뉴스</h1>
+    <label for="datePicker">날짜 선택:</label>
+    <input type="date" id="datePicker">
+    <button onclick="loadNews()">불러오기</button>
+    
     <div id="content"></div>
 
     <script>
-        fetch('news.md') // Markdown 파일 불러오기
-            .then(response => response.text())
-            .then(text => {
-                document.getElementById('content').innerHTML = marked.parse(text);
-            });
+        function loadNews() {
+            let dateInput = document.getElementById("datePicker").value; // 사용자가 입력한 날짜
+            if (!dateInput) {
+                alert("날짜를 선택하세요! 😆");
+                return;
+            }
+
+            let mdFileName = dateInput + ".md"; // YYYY-MM-DD.md 형식
+            fetch(mdFileName)
+                .then(response => {
+                    if (!response.ok) throw new Error("파일 없음!");
+                    return response.text();
+                })
+                .then(text => {
+                    document.getElementById("content").innerHTML = marked.parse(text);
+                })
+                .catch(error => {
+                    document.getElementById("content").innerHTML = "<p>해당 날짜의 뉴스가 없습니다. 🥲</p>";
+                });
+        }
     </script>
 </body>
 </html>
