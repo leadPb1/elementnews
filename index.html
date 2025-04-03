@@ -4,37 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>원소뉴스</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.10/marked.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #content { margin-top: 20px; padding: 10px; border: 1px solid #ccc; display: inline-block; text-align: left; width: 80%; max-width: 600px; }
+    </style>
 </head>
 <body>
-    <h1>원소뉴스</h1>
+    <h1>원소뉴스 📰</h1>
     <label for="datePicker">날짜 선택:</label>
     <input type="date" id="datePicker">
     <button onclick="loadNews()">불러오기</button>
-    
-    <div id="content"></div>
+
+    <div id="content"><p>날짜를 선택하고 뉴스를 불러오세요! 📅</p></div>
 
     <script>
         function loadNews() {
-            let dateInput = document.getElementById("datePicker").value; // 사용자가 입력한 날짜
+            let dateInput = document.getElementById("datePicker").value;
             if (!dateInput) {
                 alert("날짜를 선택하세요! 😆");
                 return;
             }
 
-            let mdFileName = dateInput + ".md"; // YYYY-MM-DD.md 형식
-            fetch(mdFileName)
+            let txtFileName = dateInput + ".txt"; // YYYY-MM-DD.txt 형식
+            fetch(txtFileName)
                 .then(response => {
                     if (!response.ok) throw new Error("파일 없음!");
                     return response.text();
                 })
                 .then(text => {
-                    document.getElementById("content").innerHTML = marked.parse(text);
+                    document.getElementById("content").innerHTML = "<pre>" + text + "</pre>";
                 })
                 .catch(error => {
                     document.getElementById("content").innerHTML = "<p>해당 날짜의 뉴스가 없습니다. 🥲</p>";
                 });
         }
+
+        // 페이지 로드 시 오늘 날짜 자동 불러오기
+        document.addEventListener("DOMContentLoaded", function () {
+            let today = new Date().toISOString().split('T')[0]; // 오늘 날짜 YYYY-MM-DD
+            document.getElementById("datePicker").value = today;
+            loadNews();
+        });
     </script>
 </body>
 </html>
