@@ -25,7 +25,7 @@
                 return;
             }
 
-            let txtFileName = dateInput + ".md"; // YYYY-MM-DD.md 형식
+            let mdFileName = dateInput + ".md"; // YYYY-MM-DD.md 형식
             fetch(txtFileName)
                 .then(response => {
                     if (!response.ok) throw new Error("파일 없음!");
