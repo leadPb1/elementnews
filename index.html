@@ -20,29 +20,33 @@
     <div id="content"><p>날짜를 선택하고 뉴스를 불러오세요!</p></div>
 
     <script>
-        function loadNews() {
-            let dateInput = document.getElementById("datePicker").value;
-            if (!dateInput) {
-                alert("날짜를 선택하세요!");
-                return;
-            }
+function loadNews() {
+    let dateInput = document.getElementById("datePicker").value;
+    if (!dateInput) {
+        alert("날짜를 선택하세요!");
+        return;
+    }
 
-            let mdFileName = dateInput + ".md"; // YYYY-MM-DD.md 형식
-            fetch(mdFileName)
-                .then(response => {
-                    if (!response.ok) throw new Error("파일 없음!");
-                    return response.text();
-                })
-                .then(text => {
-                    // 마크다운을 HTML로 변환
-                    let htmlContent = marked(text);
-                    document.getElementById("content").innerHTML = htmlContent;
-                })
-                .catch(error => {
-                    document.getElementById("content").innerHTML = "<p>해당 날짜의 뉴스가 없습니다. 🥲</p>";
-                });
-        }
+    // 날짜 포맷 확인 (로그 출력)
+    console.log("선택된 날짜:", dateInput);  // 여기에 선택된 날짜가 제대로 찍히는지 확인
 
+    let mdFileName = dateInput + ".md"; // YYYY-MM-DD.md 형식
+    console.log("불러올 파일 이름:", mdFileName);  // 파일 이름이 제대로 생성되었는지 확인
+
+    fetch(mdFileName)
+        .then(response => {
+            if (!response.ok) throw new Error("파일 없음!");
+            return response.text();
+        })
+        .then(text => {
+            // 마크다운을 HTML로 변환
+            let htmlContent = marked(text);
+            document.getElementById("content").innerHTML = htmlContent;
+        })
+        .catch(error => {
+            document.getElementById("content").innerHTML = "<p>해당 날짜의 뉴스가 없습니다. 🥲</p>";
+        });
+}
         // 페이지 로드 시 오늘 날짜 자동 불러오기
         document.addEventListener("DOMContentLoaded", function () {
             let today = new Date().toISOString().split('T')[0]; // 오늘 날짜 YYYY-MM-DD
