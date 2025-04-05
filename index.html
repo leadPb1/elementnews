@@ -10,22 +10,22 @@
     </style>
 </head>
 <body>
-    <h1>원소뉴스 📰</h1>
+    <h1>원소뉴스</h1>
     <label for="datePicker">날짜 선택:</label>
     <input type="date" id="datePicker">
     <button onclick="loadNews()">불러오기</button>
 
-    <div id="content"><p>날짜를 선택하고 뉴스를 불러오세요! 📅</p></div>
+    <div id="content"><p>날짜를 선택하고 뉴스를 불러오세요!</p></div>
 
     <script>
         function loadNews() {
             let dateInput = document.getElementById("datePicker").value;
             if (!dateInput) {
-                alert("날짜를 선택하세요! 😆");
+                alert("날짜를 선택하세요!");
                 return;
             }
 
-            let txtFileName = dateInput + ".txt"; // YYYY-MM-DD.txt 형식
+            let txtFileName = dateInput + ".md"; // YYYY-MM-DD.md 형식
             fetch(txtFileName)
                 .then(response => {
                     if (!response.ok) throw new Error("파일 없음!");
